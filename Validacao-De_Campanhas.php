@@ -144,6 +144,23 @@ HTML;
 </form>
 </div></div></div></body></html>
 HTML;
+
+    $json = json_encode($history);
+    echo "<div class='mt-4'><h4>Gráficos de Histórico</h4>";
+    echo "<canvas id='salesChart' class='mb-4' width='400' height='200'></canvas>";
+    echo "<canvas id='campaignChart' class='mb-4' width='400' height='200'></canvas>";
+    echo "<canvas id='totalChart' width='400' height='200'></canvas>";
+    echo "<script src='https://cdn.jsdelivr.net/npm/chart.js'></script>";
+    echo "<script>";
+    echo "const historyData = $json;";
+    echo "const labels = historyData.map(r => new Date(r.timestamp).toLocaleString());";
+    echo "const sales = historyData.map(r => r.sales_count);";
+    echo "const campaigns = historyData.map(r => r.campaign_count);";
+    echo "const totals = historyData.map(r => r.total_value);";
+    echo "new Chart(document.getElementById('salesChart'), { type: 'line', data: { labels, datasets: [{ label: 'Vendas', data: sales, borderWidth: 2, fill: false }] }, options: { responsive: true } });";
+    echo "new Chart(document.getElementById('campaignChart'), { type: 'bar', data: { labels, datasets: [{ label: 'Campanhas', data: campaigns, borderWidth: 1 }] }, options: { responsive: true } });";
+    echo "new Chart(document.getElementById('totalChart'), { type: 'line', data: { labels, datasets: [{ label: 'Valor Total', data: totals, borderWidth: 2, fill: false }] }, options: { responsive: true } });";
+    echo "</script></div>";
     exit;
 }
 
